@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">截图模板编辑器</string>
+    <string name="title_activity_main">截图模板编辑器</string>
+    <string name="package_name">cn.wycyxl.templateeditor</string>
+    <string name="custom_url_scheme">cn.wycyxl.templateeditor</string>
+</resources>

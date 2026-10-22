@@ -1,0 +1,16 @@
+node_modules/
+dist/
+release/
+*.zip
+source-templates/
+TUPIPAN/
+public/fonts/AaCangshuixingkai-browser-compatible.ttf
+1.txt
+Screenshot_*.jpg
+/chi_sim.traineddata
+DEPLOY.md
+deploy/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/**/build/

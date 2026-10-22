@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>截图模板编辑器</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-mark">ST</div>
+        <div class="brand-copy">
+          <strong>截图模板编辑器</strong>
+          <span>Demo Studio</span>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="section-heading"><span>空白模板</span><span class="count" id="templateCount">0</span></div>
+            <div id="templateList"></div>
+        </div>
+
+        <div class="sidebar-section" id="importSection" hidden>
+            <div class="section-heading"><span>本次导入</span><span class="count" id="importCount">0</span></div>
+            <div id="importList"></div>
+        </div>
+
+        <div class="sidebar-section actions-section">
+          <div class="section-heading"><span>工作流</span></div>
+          <label class="sidebar-action">
+            <span class="action-icon">＋</span><span>导入图片</span>
+            <input id="imageInput" type="file" accept="image/*" hidden />
+          </label>
+          <label class="sidebar-action">
+            <span class="action-icon">↗</span><span>导入 TXT 模板</span>
+            <input id="txtInput" type="file" accept=".txt,text/plain" hidden />
+          </label>
+          <label class="sidebar-action">
+            <span class="action-icon">字</span><span>导入字体文件</span>
+            <input id="fontInput" type="file" accept=".ttf,.otf,.woff,.woff2,font/ttf,font/otf,font/woff,font/woff2" hidden />
+          </label>
+          <small class="font-status" id="fontStatus">已内置苍水行楷；也可导入字体文件</small>
+          <button class="sidebar-action" id="resetButton"><span class="action-icon">↺</span><span>重置全部修改</span></button>
+        </div>
+
+        <div class="sidebar-footer">
+          <span class="status-dot"></span>
+          <span>本地识别与编辑</span>
+          <span class="footer-version">v0.6.2</span>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow">LAYOUT WORKBENCH</div>
+            <h1 id="pageTitle">请假详情 <span>·</span> 视觉预览</h1>
+          </div>
+          <div class="topbar-actions">
+              <button class="mobile-jump" id="jumpToEditor" type="button">编辑字段 ↓</button>
+              <button class="icon-button" id="toggleGuides" title="显示或隐藏定位框" aria-label="显示或隐藏定位框">⌗</button>
+              <button class="primary-button" id="exportButton"><span>↓</span> 导出图片</button>
+          </div>
+        </header>
+
+        <section class="canvas-area">
+          <div class="canvas-toolbar">
+            <div class="toolbar-group">
+              <span class="toolbar-label">预览</span>
+              <span class="live-chip"><span class="live-dot"></span><span id="ocrStatus">准备识别</span></span>
+            </div>
+            <div class="toolbar-group">
+              <button class="tool-button text-tool" id="scanButton" title="重新识别当前图片">重新识别</button>
+              <button class="tool-button text-tool" id="manualButton" title="拖动框选漏检文字">框选补充</button>
+              <button class="tool-button" id="zoomOut" title="缩小">−</button>
+              <span class="zoom-label" id="zoomLabel">50%</span>
+              <button class="tool-button" id="zoomIn" title="放大">＋</button>
+              <button class="tool-button fit-button" id="fitButton" title="适应窗口">适应</button>
+            </div>
+          </div>
+          <div class="canvas-stage" id="canvasStage">
+            <div class="canvas-wrap" id="canvasWrap">
+              <canvas id="previewCanvas"></canvas>
+            </div>
+          </div>
+          <div class="canvas-caption">
+            <span id="canvasInfo">1216 × 2688 px</span>
+            <span>点击定位框可跳到字段；空白模板保留原字段位置</span>
+          </div>
+        </section>
+      </main>
+
+      <aside class="inspector">
+        <div class="inspector-header">
+          <div>
+            <div class="eyebrow">EDITOR</div>
+            <h2>字段编辑</h2>
+          </div>
+          <div class="inspector-header-actions"><button class="mobile-jump" id="jumpToPreview" type="button">↑ 查看预览</button><span class="field-count" id="fieldCount">0 个字段</span></div>
+        </div>
+
+        <div class="source-strip">
+          <span class="source-icon">TXT</span>
+          <div><strong id="sourceName">未导入 TXT</strong><small id="sourceStatus">支持「字段：新值」格式</small></div>
+          <button id="clearSource" class="clear-source" title="清除 TXT 来源">×</button>
+        </div>
+
+        <div class="inspector-scroll">
+          <p class="editor-help">请假详情提供 1、2、3 节课的空白模板，流程跟踪也保留。字段名称仍在原位，填写值时会限制绘制范围，减少遮挡旁边的原有文字。导入图片会在本机识别学生、请假及流程信息；漏检时可用“框选补充”。</p>
+          <section class="attachment-editor" id="attachmentEditor" hidden>
+            <div class="field-section-title">附件信息 <span>两节课模板</span></div>
+            <p>默认显示参考图中的黑色缩略图；选择图片后会在原位置替换，导出时一同保存。</p>
+            <div class="attachment-actions">
+              <label class="attachment-button">选择附件图片<input id="attachmentInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden /></label>
+              <button id="clearAttachment" type="button">清空附件</button>
+            </div>
+            <small id="attachmentStatus">未选择图片，显示参考图的黑色缩略图</small>
+          </section>
+          <div id="fieldEditor"></div>
+        </div>
+
+        <div class="inspector-footer">
+          <div class="export-format">
+            <span>导出格式</span>
+            <select id="formatSelect"><option value="png">PNG</option><option value="jpeg">JPG</option></select>
+          </div>
+          <button class="primary-button full-width" id="exportButtonBottom"><span>↓</span> 导出当前画布</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

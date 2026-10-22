@@ -1,0 +1,55 @@
+{
+  "name": "screen-template-editor",
+  "version": "0.6.2",
+  "description": "离线截图模板编辑器",
+  "main": "desktop/main.cjs",
+  "private": true,
+  "scripts": {
+    "prepare:ocr": "node scripts/prepare-ocr.mjs",
+    "predev": "npm run prepare:ocr",
+    "dev": "vite --host 127.0.0.1",
+    "dev:lan": "npm run prepare:ocr && vite --host 0.0.0.0 --port 5174 --strictPort",
+    "prebuild": "npm run prepare:ocr",
+    "build": "vite build",
+    "test:ocr": "node scripts/test-ocr.mjs",
+    "test:desktop": "npm run build && electron scripts/smoke-desktop.cjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "desktop:run": "npm run build && electron .",
+    "desktop:pack": "npm run build && powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-desktop.ps1",
+    "android:apk": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android.ps1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3",
+    "electron": "^44.7.2",
+    "electron-builder": "^26.15.3",
+    "vite": "^7.1.7"
+  },
+  "build": {
+    "appId": "cn.wycyxl.templateeditor",
+    "productName": "截图模板编辑器",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "desktop/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "portable"
+      ],
+      "artifactName": "ScreenshotTemplateEditor-${version}-portable.${ext}"
+    }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@fontsource/lxgw-wenkai": "^5.3.0",
+    "@fontsource/ma-shan-zheng": "^5.3.1",
+    "@fontsource/noto-sans-sc": "^5.3.0",
+    "@fontsource/noto-serif-sc": "^5.3.0",
+    "tesseract.js": "^7.0.0"
+  }
+}
